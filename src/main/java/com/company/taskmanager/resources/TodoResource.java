@@ -1,32 +1,31 @@
 package com.company.taskmanager.resources;
 
-import com.codahale.metrics.annotation.Timed;
 import com.company.taskmanager.api.Todo;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoResource {
     private HashMap<Long, Todo> todos = new HashMap();
+    private final AtomicLong counter;
 
     public TodoResource() {
-        for (long i=0; i<10; i++) {
-            todos.put(i, new Todo(i, "misc"));
+        counter = new AtomicLong();
+
+        for (int i=0; i<10; i++) {
+            long id = counter.incrementAndGet();
+            todos.put(id, new Todo(id, "misc "+id));
         }
     }
 
     //    GET /todos → Returns a list of all Todos
     @GET
-    public HashMap<Long,Todo> getTodos() {
-        return todos;
+    public Collection<Todo> getTodos() {
+        return todos.values();
     }
 
     //    GET /todos/{id} → Returns a Todo
@@ -39,7 +38,7 @@ public class TodoResource {
     //    POST /todos → Expects a Todo (without id) and returns a Todo with id
     @POST
     public Todo postTodo(Todo in_todo) {
-        long new_id = Collections.max(todos.keySet()) + 1;
+        long new_id = counter.incrementAndGet();
         Todo todo = new Todo(new_id, in_todo.getName());
         todos.put(new_id, todo);
         return todo;
@@ -49,6 +48,7 @@ public class TodoResource {
     @PUT
     @Path("{id}")
     public void putTodo(@PathParam("id") long id, Todo in_todo) {
+        in_todo.setId(id);
         todos.put(id, in_todo);
     }
 
