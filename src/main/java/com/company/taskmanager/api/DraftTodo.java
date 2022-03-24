@@ -4,23 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
-public class Todo {
-    private long id;
+public class DraftTodo {
     private String name;
     private ArrayList<Task> tasks;
 
-    public Todo() {
+    public DraftTodo() {
         // Jackson deserialization
     }
 
-    public Todo(long id, DraftTodo draftTodo) {
-        this.id = id;
-        this.name = draftTodo.getName();
-        this.tasks = draftTodo.getTasks();
-    }
-
-    public Todo(long id, String name) {
-        this.id = id;
+    public DraftTodo(String name) {
         this.name = name;
         tasks = new ArrayList<>();
         for (long i=0;i<3;i++) {
@@ -29,15 +21,12 @@ public class Todo {
     }
 
     @JsonProperty
-    public long getId() {return id; }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @JsonProperty
     public String getName() { return name; }
 
     @JsonProperty
     public ArrayList<Task> getTasks() { return tasks; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

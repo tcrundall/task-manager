@@ -1,5 +1,6 @@
 package com.company.taskmanager.resources;
 
+import com.company.taskmanager.api.DraftTodo;
 import com.company.taskmanager.api.Todo;
 
 import javax.ws.rs.*;
@@ -10,13 +11,15 @@ import java.util.concurrent.atomic.AtomicLong;
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoResource {
-    private HashMap<Long, Todo> todos = new HashMap();
+    private HashMap<Long, Todo> todos;
     private final AtomicLong counter;
 
     public TodoResource() {
         counter = new AtomicLong();
 
-        for (int i=0; i<10; i++) {
+        // Populate fresh hash with some dummy todos
+        todos = new HashMap<>();
+        for (int i=0; i<3; i++) {
             long id = counter.incrementAndGet();
             todos.put(id, new Todo(id, "misc "+id));
         }
@@ -37,9 +40,9 @@ public class TodoResource {
 
     //    POST /todos → Expects a Todo (without id) and returns a Todo with id
     @POST
-    public Todo postTodo(Todo in_todo) {
+    public Todo postTodo(DraftTodo draftTodo) {
         long new_id = counter.incrementAndGet();
-        Todo todo = new Todo(new_id, in_todo.getName());
+        Todo todo = new Todo(new_id, draftTodo);
         todos.put(new_id, todo);
         return todo;
     }
@@ -47,15 +50,10 @@ public class TodoResource {
     //    PUT /todos/{id} → Overwrites an existing Todo
     @PUT
     @Path("{id}")
-    public String putTodo(@PathParam("id") long id, @QueryParam("name") Optional<String> name, Todo in_todo) {
-        if (id == in_todo.getId()) {
-            todos.put(id, in_todo);
-            return "Successful put!";
-        }
-        in_todo.setId(id);
-        todos.put(id, in_todo);
-        return "Inconsistent ids";
-
+    public String putTodo(@PathParam("id") long id, DraftTodo draftTodo) {
+        Todo todo = new Todo(id, draftTodo);
+        todos.put(id, todo);
+        return "Successful put!";
     }
 
     //    DELETE /todos/{id} → Deletes a Todo
