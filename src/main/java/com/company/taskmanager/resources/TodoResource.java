@@ -47,9 +47,15 @@ public class TodoResource {
     //    PUT /todos/{id} → Overwrites an existing Todo
     @PUT
     @Path("{id}")
-    public void putTodo(@PathParam("id") long id, Todo in_todo) {
+    public String putTodo(@PathParam("id") long id, @QueryParam("name") Optional<String> name, Todo in_todo) {
+        if (id == in_todo.getId()) {
+            todos.put(id, in_todo);
+            return "Successful put!";
+        }
         in_todo.setId(id);
         todos.put(id, in_todo);
+        return "Inconsistent ids";
+
     }
 
     //    DELETE /todos/{id} → Deletes a Todo
