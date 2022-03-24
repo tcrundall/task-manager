@@ -1,6 +1,7 @@
 package com.company.taskmanager;
 
 import com.company.taskmanager.health.TemplateHealthCheck;
+import com.company.taskmanager.health.TodoHealthCheck;
 import com.company.taskmanager.resources.TaskManagerResource;
 import com.company.taskmanager.resources.TodoResource;
 import io.dropwizard.Application;
@@ -25,6 +26,8 @@ public class TaskManagerApplication extends Application<TaskManagerConfiguration
     @Override
     public void run(TaskManagerConfiguration configuration,
                     Environment environment) {
+
+        // Add resources
         final TaskManagerResource resource = new TaskManagerResource(
                 configuration.getTemplate(),
                 configuration.getDefaultName()
@@ -34,10 +37,13 @@ public class TaskManagerApplication extends Application<TaskManagerConfiguration
         final TodoResource todoResource = new TodoResource();
         environment.jersey().register(todoResource);
 
+        // Add health checks
         final TemplateHealthCheck healthCheck =
                 new TemplateHealthCheck(configuration.getTemplate());
         environment.healthChecks().register("template", healthCheck);
-        // nothing to do yet
+        final TodoHealthCheck todoHealthCheck =
+                new TodoHealthCheck();
+        environment.healthChecks().register("todo", todoHealthCheck);
     }
 
 }

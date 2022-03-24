@@ -15,6 +15,6 @@ public class TemplateHealthCheck extends HealthCheck {
         if (!saying.contains("TEST")) {
             return Result.unhealthy("template doesn't include a name");
         }
-        return Result.healthy();
+        return Result.healthy("All good :)");
     }
 }
