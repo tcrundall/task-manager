@@ -3,6 +3,7 @@ package com.company.taskmanager.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Todo {
     private long id;
@@ -24,7 +25,7 @@ public class Todo {
         this.name = name;
         tasks = new ArrayList<>();
         for (long i=0;i<3;i++) {
-            tasks.add(new Task(i, "dummy task "+i));
+            tasks.add(new Task(i, "dummy task "+i, Optional.of("dummy description")));
         }
     }
 

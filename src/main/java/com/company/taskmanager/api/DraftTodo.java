@@ -3,6 +3,7 @@ package com.company.taskmanager.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class DraftTodo {
     private String name;
@@ -16,7 +17,7 @@ public class DraftTodo {
         this.name = name;
         tasks = new ArrayList<>();
         for (long i=0;i<3;i++) {
-            tasks.add(new Task(i, "dummy task "+i));
+            tasks.add(new Task(i, "dummy task "+i, Optional.of("dummy description")));
         }
     }
 
@@ -25,8 +26,4 @@ public class DraftTodo {
 
     @JsonProperty
     public ArrayList<Task> getTasks() { return tasks; }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
