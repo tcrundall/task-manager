@@ -42,7 +42,7 @@ public class TaskManagerApplication extends Application<TaskManagerConfiguration
                 new TemplateHealthCheck(configuration.getTemplate());
         environment.healthChecks().register("template", healthCheck);
         final TodoHealthCheck todoHealthCheck =
-                new TodoHealthCheck();
+                new TodoHealthCheck(todoResource.getTodos());
         environment.healthChecks().register("todo", todoHealthCheck);
     }
 
