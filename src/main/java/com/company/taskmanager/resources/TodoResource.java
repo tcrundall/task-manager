@@ -21,7 +21,7 @@ public class TodoResource {
         todos = new HashMap<>();
         for (int i=0; i<3; i++) {
             long id = counter.incrementAndGet();
-            todos.put(id, new Todo(id, "misc "+id));
+            todos.put(id, new Todo(id, "misc "+id, Optional.empty()));
         }
     }
 
