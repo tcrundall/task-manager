@@ -8,6 +8,7 @@ import java.util.Optional;
 public class Todo {
     private long id;
     private String name;
+    private Optional<String> description;
     private ArrayList<Task> tasks;
 
     public Todo() {
@@ -17,6 +18,7 @@ public class Todo {
     public Todo(long id, DraftTodo draftTodo) {
         this.id = id;
         this.name = draftTodo.getName();
+        this.description = draftTodo.getDescription();
         this.tasks = draftTodo.getTasks();
     }
 
@@ -38,6 +40,9 @@ public class Todo {
 
     @JsonProperty
     public String getName() { return name; }
+
+    @JsonProperty
+    public Optional<String> getDescription() { return description; }
 
     @JsonProperty
     public ArrayList<Task> getTasks() { return tasks; }
