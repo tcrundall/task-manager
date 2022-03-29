@@ -6,6 +6,9 @@ import com.company.taskmanager.api.Todo;
 
 import java.util.Collection;
 
+/**
+ * A Healthcheck for the TodoResource
+ */
 public class TodoHealthCheck extends HealthCheck {
     private Collection<Todo> todos;
 
@@ -13,6 +16,14 @@ public class TodoHealthCheck extends HealthCheck {
         this.todos = todos;
     }
 
+    /**
+     * Checks the health of the Hashmap of todos
+     * Ensures that all names and ids of all todos and tasks
+     * are valid.
+     * Validity is defined as:
+     *   id >= 0
+     *   name != ""
+     */
     @Override
     protected Result check() throws Exception {
         for (Todo t : todos) {

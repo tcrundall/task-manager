@@ -8,12 +8,28 @@ import javax.ws.rs.core.MediaType;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * This class is a RESTful resource which manages a set of
+ * todo objects.
+ *
+ * The todos are stored in a hashmap. The keys for the
+ * hashmap are the ids of the todos. To ensure uniqueness
+ * of keys/ids they are generated within the TodoResource
+ * via an AtomicLong.
+ */
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoResource {
     private HashMap<Long, Todo> todos;
     private final AtomicLong counter;
 
+    /**
+     * Creates a TodoResource
+     * Initialises an AtomicLong counter which will be used
+     * to generate unique todo ids.
+     * Initalises also the hashmap of todos, and populates it
+     * with some simple todo objects.
+     */
     public TodoResource() {
         counter = new AtomicLong();
 
@@ -26,19 +42,34 @@ public class TodoResource {
     }
 
     //    GET /todos → Returns a list of all Todos
+
+    /**
+     * GET /todos
+     * returns a collection of all todos
+     */
     @GET
     public Collection<Todo> getTodos() {
         return todos.values();
     }
 
-    //    GET /todos/{id} → Returns a Todo
+    //
+
+    /**
+     * GET /todos/{id}
+     * Returns a todo with the associated id
+     */
     @GET
     @Path("{id}")
     public Todo getTodo(@PathParam("id") long id) {
         return todos.get(id);
     }
 
-    //    POST /todos → Expects a Todo (without id) and returns a Todo with id
+    /**
+     * POST /todos
+     * Expects a draftTodo (similar to a Todo but without an id)
+     * and returns a Todo with identical attributes to draftTodo but
+     * with a newly generated id
+     */
     @POST
     public Todo postTodo(DraftTodo draftTodo) {
         long new_id = counter.incrementAndGet();
@@ -47,7 +78,10 @@ public class TodoResource {
         return todo;
     }
 
-    //    PUT /todos/{id} → Overwrites an existing Todo
+    /**
+     * PUT /todos/{id}
+     * Takes a draftTodo and overwrites an existing Todo
+     */
     @PUT
     @Path("{id}")
     public String putTodo(@PathParam("id") long id, DraftTodo draftTodo) {
@@ -56,7 +90,10 @@ public class TodoResource {
         return "Successful put!";
     }
 
-    //    DELETE /todos/{id} → Deletes a Todo
+    /**
+     * DELETE /todos/{id}
+     * Deletes a Todo with the associated id
+     */
     @DELETE
     @Path("{id}")
     public void deleteTodo(@PathParam("id") long id) {
