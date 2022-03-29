@@ -5,14 +5,15 @@ import com.company.taskmanager.api.Task;
 import com.company.taskmanager.api.Todo;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * A Healthcheck for the TodoResource
  */
 public class TodoHealthCheck extends HealthCheck {
-    private Collection<Todo> todos;
+    private HashMap<Long, Todo> todos;
 
-    public TodoHealthCheck(Collection<Todo> todos) {
+    public TodoHealthCheck(HashMap<Long, Todo> todos) {
         this.todos = todos;
     }
 
@@ -26,7 +27,8 @@ public class TodoHealthCheck extends HealthCheck {
      */
     @Override
     protected Result check() throws Exception {
-        for (Todo t : todos) {
+        System.out.println(todos.values());
+        for (Todo t : todos.values()) {
             if (t.getId() < 0) {
                 return Result.unhealthy("A todo has an invalid or missing id (" + t.getId() +")");
             }

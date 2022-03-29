@@ -41,7 +41,9 @@ public class TodoResource {
         }
     }
 
-    //    GET /todos → Returns a list of all Todos
+    public HashMap<Long, Todo> getTodoHashmap() {
+        return todos;
+    }
 
     /**
      * GET /todos
@@ -51,8 +53,6 @@ public class TodoResource {
     public Collection<Todo> getTodos() {
         return todos.values();
     }
-
-    //
 
     /**
      * GET /todos/{id}

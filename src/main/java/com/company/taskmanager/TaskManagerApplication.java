@@ -38,7 +38,7 @@ public class TaskManagerApplication extends Application<TaskManagerConfiguration
 
         // Add health checks
         final TodoHealthCheck todoHealthCheck =
-                new TodoHealthCheck(todoResource.getTodos());
+                new TodoHealthCheck(todoResource.getTodoHashmap());
         environment.healthChecks().register("todo", todoHealthCheck);
     }
 
