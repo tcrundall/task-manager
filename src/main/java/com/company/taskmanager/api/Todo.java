@@ -11,6 +11,9 @@ import java.util.Optional;
  * to ensure correct assignment of unique IDs.
  * Todos can be created either from a draftTodo object
  * or from just a name.
+ *
+ * Jackson annotations are used to allow for (de)serialization between
+ * JSON and java
  */
 public class Todo {
     private long id;
